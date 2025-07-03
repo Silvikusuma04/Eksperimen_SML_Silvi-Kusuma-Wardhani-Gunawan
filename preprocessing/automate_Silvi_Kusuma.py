@@ -30,13 +30,13 @@ def main():
 
     df_normalized[numeric_columns] = scaler.fit_transform(df_normalized[numeric_columns])
 
-    output_dir = 'preprocessing/namadataset_preprocessing'
+    output_dir = 'preprocessing/padi_preprocessing'
     os.makedirs(output_dir, exist_ok=True)
 
-    processed_data_path = os.path.join(output_dir, 'preprocessed_padi.csv')
+    processed_data_path = os.path.join(output_dir, 'preprocessing_padi.csv')
     df_normalized.to_csv(processed_data_path, index=False)
 
-    joblib.dump(scaler, os.path.join(output_dir, 'min_max_scaler.joblib'))
+    joblib.dump(scaler, os.path.join(output_dir, 'scaler.joblib'))
     joblib.dump(label_encoder, os.path.join(output_dir, 'label_encoder.joblib'))
     
     print(f"Preprocessing selesai. Output disimpan di {output_dir}")
