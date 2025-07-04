@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}  # untuk bisa commit
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -25,8 +27,11 @@ jobs:
       - name: Run Preprocessing Script
         run: python preprocessing/automate_Silvi_Kusuma.py
 
-      - name: Upload Preprocessed Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: preprocessed-paddy-dataset
-          path: preprocessing/padi_preprocessing/
+      - name: Commit and Push Preprocessed Files
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add preprocessing/
+          git commit -m "Add auto-preprocessed files"
+          git push origin main
+        continue-on-error: true  # supaya tidak error kalau tidak ada perubahan
