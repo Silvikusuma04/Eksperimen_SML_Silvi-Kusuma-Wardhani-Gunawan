@@ -8,6 +8,7 @@ on:
 jobs:
   run-preprocessing:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -32,6 +33,13 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add preprocessing/
-          git commit -m "Add auto-preprocessed files"
+          git diff --cached --quiet || git commit -m "Add auto-preprocessed files"
           git push origin main
-        continue-on-error: true  # supaya tidak error kalau tidak ada perubahan
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Preprocessed Files as Artifact (optional)
+        uses: actions/upload-artifact@v4
+        with:
+          name: preprocessed-paddy-dataset
+          path: preprocessing/
